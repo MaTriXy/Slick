@@ -35,7 +35,7 @@ public class YourPresenter extends SlickPresenter<ActivityView> {
     }
 
     @Override
-    public void onViewUp(ActivityView view) {
+    public void onViewUp(@NonNull ActivityView view) {
         //view onStart
     }
 
@@ -46,7 +46,7 @@ public class YourPresenter extends SlickPresenter<ActivityView> {
 
     @Override
     public void onDestroy() {
-        //only is called when view is finishing
+        //only is called once when view is finishing
     }
 }
 ```
@@ -65,14 +65,16 @@ Other View types have the same logic, for more detailed instruction head to [Wik
 3. Retains Presenters in disposable, lifecycle-aware singletons
 4. Reactive support inspired by MVI and Elm architecture
 5. Do not need to extend any base class for your views
-6. Fully Type-safe
-7. Dagger ready!
+6. Easily test presenters on JVM with junit
+7. Use multiple Presenter for one view
+8. Fully Type-safe
+9. Dagger ready!
 
-### Reactive Feature
+### Reactive MVP Features:
 
 1. Unidirectional Data Flow & Immutable ViewState
 2. Automatic subscription and disposing of RxJava2 streams
-3. Easily testable
+
 
 ```java
 public class YourPresenterUni extends SlickPresenterUni<ViewActivity, ViewStateActivity> {
@@ -80,7 +82,7 @@ public class YourPresenterUni extends SlickPresenterUni<ViewActivity, ViewStateA
     /** ... **/
 
     @Override
-    protected void start(ViewActivity view) {
+    protected void start(@NonNull ViewActivity view) {
         Observable<PartialViewState<ViewStateActivity>> like = command(ViewActivity::likeMovie)
                 .flatMap(id -> repositoryMovies.like(id).subscribeOn(io))//call to backend
                 .map(PartialViewStateLiked::new);
@@ -107,25 +109,25 @@ For more detailed guide on Reactive Features read the [Wiki](https://github.com/
 
 Packages are available in `jcenter`
 
-```
+``` groovy
 // Base features
-implementation 'com.mrezanasirloo:slick:1.1.2'
+implementation 'com.mrezanasirloo:slick:1.1.4'
 
 // Reactive features
-implementation 'com.mrezanasirloo:slick-reactive:1.1.2'
+implementation 'com.mrezanasirloo:slick-reactive:1.1.4'
 
-implementation 'com.mrezanasirloo:slick-conductor:1.1.2'
-implementation 'com.mrezanasirloo:slick-support-fragment:1.1.2'
+implementation 'com.mrezanasirloo:slick-conductor:1.1.4'
+implementation 'com.mrezanasirloo:slick-support-fragment:1.1.4'
 
-annotationProcessor 'com.mrezanasirloo:slick-compiler:1.1.2'
+annotationProcessor 'com.mrezanasirloo:slick-compiler:1.1.4'
 ```
 
 Since Slick packages are not tied to a specific dependency you need to provide them.
-```
-//Conductor
+``` groovy
+// Conductor
 implementation 'com.bluelinelabs:conductor:2.x.y'
 
-//RxJava for Reactive Features
+// RxJava for Reactive Features
 implementation 'io.reactivex.rxjava2:rxjava:2.x.y'
 ```
 
